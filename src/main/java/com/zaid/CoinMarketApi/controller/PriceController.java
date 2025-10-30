@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/prices")
@@ -24,6 +26,16 @@ public class PriceController {
         return cryptoPriceService.getLatestPrice(coin)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{coin}/history")
+    public ResponseEntity<List<CryptoPrice>> getPriceHistory(@PathVariable String coin) {
+        List<CryptoPrice> history = cryptoPriceService.getPriceHistory(coin);
+
+        if (history.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(history);
     }
 
 }

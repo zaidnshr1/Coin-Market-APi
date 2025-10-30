@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -74,6 +75,10 @@ public class CryptoPriceService {
         System.out.println("Fetching from DB/API for coin: " + coin);
         CryptoPrice latestPrice = coinPriceRepository.findTopByCoinOrderByTimestampDesc(coin.toUpperCase());
         return Optional.ofNullable(latestPrice);
+    }
+
+    public List<CryptoPrice> getPriceHistory(String coin) {
+        return coinPriceRepository.findAllByCoinOrderByTimestampDesc(coin.toUpperCase());
     }
 
 }
